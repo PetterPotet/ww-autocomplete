@@ -4,6 +4,7 @@ label: {
 en: 'Autocomplete',
 },
 icon: 'search',
+formInput: true,
 },
 properties: {
 initialValue: {
