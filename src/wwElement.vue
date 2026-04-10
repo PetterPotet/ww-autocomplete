@@ -72,10 +72,24 @@ event: { value }
 });
 };
 
-// Create debounced version of the typing handler
+// Create debounced change handler (fires on input, not on select)
+const emitChange = (value) => {
+if (isEditing.value) return;
+emit('trigger-event', {
+name: 'change',
+event: { value, option: {} }
+});
+};
+
+// Create debounced versions using the same debounceDelay setting
 const debouncedEmitTyping = computed(() => {
 const delay = props.content?.debounceDelay ?? 300;
 return debounce(emitTyping, delay);
+});
+
+const debouncedEmitChange = computed(() => {
+const delay = props.content?.debounceDelay ?? 300;
+return debounce(emitChange, delay);
 });
 
 // Component state
@@ -179,17 +193,13 @@ setSelectedItem({});
 isOpen.value = true;
 activeIndex.value = -1;
 
-// Emit the debounced typing event
+// Emit the debounced typing and change events
 debouncedEmitTyping.value(inputValue.value);
+debouncedEmitChange.value(inputValue.value);
 
 emit('trigger-event', {
 name: 'input',
 event: { value: event.target.value }
-});
-
-emit('trigger-event', {
-name: 'change',
-event: { value: event.target.value, option: {} }
 });
 };
 
@@ -344,6 +354,7 @@ clearInput,
 getOptionLabel,
 getOptionLabel2,
 debouncedEmitTyping,
+debouncedEmitChange,
 debounceDelay,
 };
 }
