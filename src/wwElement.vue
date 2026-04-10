@@ -44,14 +44,13 @@ class="ww-autocomplete__option"
 </template>
 
 <script>
-import { ref, computed, watch, inject, nextTick, onMounted } from 'vue';
+import { ref, computed, watch, nextTick, onMounted } from 'vue';
 import { debounce } from 'lodash';
 
 export default {
 props: {
 content: { type: Object, required: true },
 uid: { type: String, required: true },
-wwElementState: { type: Object, default: () => ({}) },
 },
 
 emits: ['trigger-event'],
@@ -122,24 +121,6 @@ type: 'object',
 defaultValue: {},
 });
 
-// WeWeb Form element integration
-const useForm = inject('_wwForm:useForm', () => {});
-useForm(
-selectedValue,
-{
-fieldName: computed(() => props.content?.name || ''),
-validation: null,
-customValidation: null,
-required: computed(() => props.content?.required || false),
-initialValue: computed(() => props.content?.initialValue || ''),
-},
-{
-elementState: props.wwElementState,
-emit,
-sidepanelFormPath: 'settings',
-setValue: setSelectedValue,
-}
-);
 
 // Options handling
 const options = computed(() => {
