@@ -16,6 +16,15 @@ bindable: true,
 section: 'settings',
 defaultValue: '',
 },
+required: {
+label: {
+en: 'Required',
+},
+type: 'OnOff',
+bindable: true,
+section: 'settings',
+defaultValue: false,
+},
 name: {
 label: {
 en: 'Form field name (value)',
