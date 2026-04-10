@@ -30,7 +30,8 @@ class="ww-autocomplete__option"
 @mousedown.prevent="selectOption(option)"
 @mouseover="activeIndex = index"
 >
-{{ getOptionLabel(option) }}
+<span class="ww-autocomplete__option-label1">{{ getOptionLabel(option) }}</span>
+<span v-if="getOptionLabel2(option)" class="ww-autocomplete__option-label2">{{ getOptionLabel2(option) }}</span>
 </div>
 </div>
 
@@ -120,8 +121,8 @@ return option;
 }
 
 if (option && typeof option === 'object') {
-const labelPath = props.content.labelPath || 'label';
-return wwLib.wwUtils.resolveObjectPropertyPath(option, labelPath) || '';
+const label1Path = props.content?.label1Path || 'label';
+return wwLib.wwUtils.resolveObjectPropertyPath(option, label1Path) || '';
 }
 
 return '';
@@ -140,6 +141,13 @@ return wwLib.wwUtils.resolveObjectPropertyPath(option, valuePath) || '';
 return '';
 };
 
+const getOptionLabel2 = (option) => {
+if (!option || typeof option !== 'object') return '';
+const label2Path = props.content?.label2Path;
+if (!label2Path) return '';
+return wwLib.wwUtils.resolveObjectPropertyPath(option, label2Path) || '';
+};
+
 // Input handling
 const onInput = (event) => {
 inputValue.value = event.target.value;
@@ -153,6 +161,11 @@ debouncedEmitTyping.value(inputValue.value);
 emit('trigger-event', {
 name: 'input',
 event: { value: event.target.value }
+});
+
+emit('trigger-event', {
+name: 'change',
+event: { value: event.target.value, option: {} }
 });
 };
 
@@ -214,6 +227,11 @@ setSelectedItem(option || {});
 isOpen.value = false;
 
 emit('trigger-event', {
+name: 'select',
+event: { value, option: option || {} }
+});
+
+emit('trigger-event', {
 name: 'change',
 event: { value, option: option || {} }
 });
@@ -226,6 +244,11 @@ inputValue.value = '';
 setInputTextVar('');
 setSelectedValue('');
 setSelectedItem({});
+
+emit('trigger-event', {
+name: 'select',
+event: { value: '', option: {} }
+});
 
 emit('trigger-event', {
 name: 'change',
@@ -295,6 +318,7 @@ onKeyDown,
 selectOption,
 clearInput,
 getOptionLabel,
+getOptionLabel2,
 debouncedEmitTyping,
 debounceDelay,
 };
@@ -358,10 +382,25 @@ z-index: 1000;
 &__option {
 padding: 8px 12px;
 cursor: pointer;
+display: flex;
+flex-direction: column;
+gap: 2px;
 
 &:hover, &.is-active {
 background-color: #f5f5f5;
 }
+}
+
+&__option-label1 {
+font-size: 14px;
+line-height: 1.3;
+}
+
+&__option-label2 {
+font-size: 12px;
+font-style: italic;
+color: #888;
+line-height: 1.3;
 }
 
 &__no-results {

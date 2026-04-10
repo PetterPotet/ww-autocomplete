@@ -50,17 +50,31 @@ defaultValue: '',
 },
 },
 },
-labelPath: {
+label1Path: {
 label: {
-en: 'Label path',
+en: 'Label 1 path',
 },
 type: 'Text',
 bindable: true,
 section: 'settings',
 defaultValue: 'label',
 hidden: (content) => {
-return !Array.isArray(content.options) || 
-content.options.length === 0 || 
+return !Array.isArray(content.options) ||
+content.options.length === 0 ||
+typeof content.options[0] !== 'object';
+},
+},
+label2Path: {
+label: {
+en: 'Label 2 path',
+},
+type: 'Text',
+bindable: true,
+section: 'settings',
+defaultValue: '',
+hidden: (content) => {
+return !Array.isArray(content.options) ||
+content.options.length === 0 ||
 typeof content.options[0] !== 'object';
 },
 },
@@ -73,8 +87,8 @@ bindable: true,
 section: 'settings',
 defaultValue: 'value',
 hidden: (content) => {
-return !Array.isArray(content.options) || 
-content.options.length === 0 || 
+return !Array.isArray(content.options) ||
+content.options.length === 0 ||
 typeof content.options[0] !== 'object';
 },
 },
@@ -111,6 +125,17 @@ step: 100
 },
 triggerEvents: [
 {
+name: 'select',
+label: {
+en: 'On select',
+},
+event: {
+value: '',
+option: {},
+},
+default: true,
+},
+{
 name: 'change',
 label: {
 en: 'On change',
@@ -119,7 +144,6 @@ event: {
 value: '',
 option: {},
 },
-default: true,
 },
 {
 name: 'input',
