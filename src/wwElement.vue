@@ -1,5 +1,7 @@
 <template>
 <div class="ww-autocomplete" :class="{ 'is-open': isOpen }">
+<input v-if="content.name" type="hidden" :name="content.name" :value="selectedValue" />
+<input v-if="content.inputName" type="hidden" :name="content.inputName" :value="inputValue" />
 <div class="ww-autocomplete__input-wrapper">
 <input
 ref="inputRef"
@@ -152,6 +154,8 @@ return wwLib.wwUtils.resolveObjectPropertyPath(option, label2Path) || '';
 const onInput = (event) => {
 inputValue.value = event.target.value;
 setInputTextVar(event.target.value);
+setSelectedValue('');
+setSelectedItem({});
 isOpen.value = true;
 activeIndex.value = -1;
 

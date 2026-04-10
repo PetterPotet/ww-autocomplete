@@ -15,6 +15,24 @@ bindable: true,
 section: 'settings',
 defaultValue: '',
 },
+name: {
+label: {
+en: 'Form field name (value)',
+},
+type: 'Text',
+bindable: true,
+section: 'settings',
+defaultValue: '',
+},
+inputName: {
+label: {
+en: 'Form field name (input text)',
+},
+type: 'Text',
+bindable: true,
+section: 'settings',
+defaultValue: '',
+},
 placeholder: {
 label: {
 en: 'Placeholder',
